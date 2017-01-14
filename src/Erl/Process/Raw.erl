@@ -24,8 +24,10 @@ receiveWithTrappedMsg(F) ->
     receive
         {'EXIT', Pid, kill  } -> F({exitMsg, Pid, {kill}});
         {'EXIT', Pid, normal} -> F({exitMsg, Pid, {normal}});
-        {'EXIT', Pid, Other } -> F({exitMsg, Pid, {other, Other}});
-        X                     -> X
+        {'EXIT', Pid, X     } when erlang:is_atom(X)
+                              -> F({exitMsg, Pid, {other, erlang:atom_to_list(X)}});
+        {'EXIT', Pid, X     } -> F({exitMsg, Pid, {other, io_lib:format("~p",[X])}});
+        Msg                   -> Msg
     end.
 
 setTrappedExit(B) -> fun() -> process_flag(trap_exit, B) end.
