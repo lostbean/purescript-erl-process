@@ -1,5 +1,6 @@
 module Erl.Process.Raw
   ( Pid
+  , self
   , spawn
   , spawnLink
   , PROCESS
@@ -24,6 +25,8 @@ instance eqPid :: Eq Pid where
   eq = eqNative
 
 foreign import eqNative :: forall a. a -> a -> Boolean
+
+foreign import self :: forall eff. Eff (process :: PROCESS | eff) Pid
 
 foreign import spawn :: forall eff. (Eff (process :: PROCESS | eff) Unit) -> Eff (process :: PROCESS | eff) Pid
 

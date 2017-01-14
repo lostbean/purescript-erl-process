@@ -6,6 +6,7 @@ module Erl.Process
   , receiveWithTrappedMsg
   , send
   , (!)
+  , self
   , spawn
   , spawn'
   , spawnLink
@@ -42,6 +43,9 @@ send :: forall eff a. Process a -> a -> Eff (process :: Raw.PROCESS | eff) Unit
 send p x = Raw.send (runProcess p) x
 
 infixr 6 send as !
+
+self :: forall eff. Eff (process :: Raw.PROCESS | eff) Raw.Pid
+self = Raw.self
 
 spawn' :: forall eff y b a. (forall z. Eff (rec :: REC z a, process :: Raw.PROCESS | eff) Unit)
        -> Eff (process :: Raw.PROCESS, rec :: REC y b | eff) (Process a)

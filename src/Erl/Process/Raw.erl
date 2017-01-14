@@ -1,8 +1,10 @@
 % module Erl.Process.Raw
 -module(erl_process_raw@foreign).
--export([ eqNative/1, spawn/1, spawnLink/1, send/1, 'receive'/0, receiveWithTrappedMsg/1, setTrappedExit/1, exit/1, exitPid/1]).
+-export([ eqNative/1, self/0, spawn/1, spawnLink/1, send/1, 'receive'/0, receiveWithTrappedMsg/1, setTrappedExit/1, exit/1, exitPid/1]).
 
 eqNative(X) -> fun (Y) -> X == Y end.
+
+self() -> fun () -> erlang:self() end.
 
 spawn(F) -> fun () -> erlang:spawn(fun () -> F() end) end.
 
