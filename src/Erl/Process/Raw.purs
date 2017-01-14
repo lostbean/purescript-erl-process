@@ -9,6 +9,8 @@ module Erl.Process.Raw
   , ExitReason (..)
   , receiveWithTrappedMsg
   , setTrappedExit
+  , exit
+  , exitPid
   ) where
 
 import Prelude
@@ -38,8 +40,13 @@ data ExitReason
   | Kill
   | Other String
 
+-- TODO: Generalize exit reason to `Reason a` and use some Eff (exit :: EXIT z a | eff)
 foreign import receiveWithTrappedMsg :: forall eff a. (ExitMsg ->  Eff (process :: PROCESS | eff) Unit)
                                      -> Eff (process :: PROCESS | eff) a
 
 -- TODO: Use a more general processFlag :: Flag -> Eff eff Flag
 foreign import setTrappedExit :: forall eff. Boolean -> Eff eff Boolean
+
+foreign import exit :: forall eff. ExitReason ->  Eff (process :: PROCESS | eff) Unit
+
+foreign import exitPid :: forall eff. ExitMsg ->  Eff (process :: PROCESS | eff) Boolean

@@ -10,6 +10,8 @@ module Erl.Process
   , spawn'
   , spawnLink
   , setTrappedExit
+  , exitPid
+  , exit
   , module RawExport
   ) where
 
@@ -67,3 +69,9 @@ spawnLink e =  Process <$> Raw.spawnLink (coerce e)
 
 setTrappedExit :: forall eff. Boolean -> Eff eff Boolean
 setTrappedExit = Raw.setTrappedExit
+
+exit :: forall eff. Raw.ExitReason ->  Eff (process :: Raw.PROCESS | eff) Unit
+exit = Raw.exit
+
+exitPid :: forall eff. Raw.ExitMsg ->  Eff (process :: Raw.PROCESS | eff) Boolean
+exitPid = Raw.exitPid
